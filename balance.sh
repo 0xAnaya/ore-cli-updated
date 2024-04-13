@@ -16,7 +16,7 @@ while true; do
 
     total_balance=0
     for i in {1..11}; do
-        balance=$(ore --keypair ~/.config/solana/ids/id$i.json rewards | grep -oP '^\d+(.\d+)?(?= ORE)')
+        balance=$(ore --keypair /home/user/ore-miner/mine/id$i.json rewards | grep -oP '^\d+(.\d+)?(?= ORE)')
 
         if [ ! -z "$balance" ]; then
             total_balance=$(echo "$total_balance + $balance" | bc)
@@ -34,7 +34,7 @@ while true; do
     echo "Unclaimed, 0$total_balance, $value" >> "$csv_file"
     echo "---------,------------, -------------" >> "$csv_file"
 
-    balance2=$(ore --keypair ~/.config/solana/ids/claimed.json balance | grep -oP '^\d+(.\d+)?(?= ORE)')
+    balance2=$(ore --keypair /home/user/ore-miner/mine/claimed.json balance | grep -oP '^\d+(.\d+)?(?= ORE)')
     value2=$(echo "$price * $balance2" | bc)
 
     echo " Claimed, $balance2, $value2" >> "$csv_file"
