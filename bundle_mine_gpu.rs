@@ -392,13 +392,13 @@ impl SendBundleTask {
             let mut signatures = vec![];
 
             let tipper = utils::pick_richest_account(&self.signer_balances, &accounts.pubkey);
-            let material_to_build_bundle = mining_results.chunks(20).zip(accounts.signers.chunks(20));
+            let material_to_build_bundle = mining_results.chunks(10).zip(accounts.signers.chunks(10));
             let send_bundle_time = Instant::now();
 
             debug!(accounts = ?accounts.pubkey, %tipper, "building bundle");
 
             for bus in &self.available_bus {
-                let mut bundle = Vec::with_capacity(20);
+                let mut bundle = Vec::with_capacity(10);
 
                 for (hash_and_nonce, signers) in material_to_build_bundle.clone() {
                     let fee_payer_this_batch = signers
@@ -407,8 +407,8 @@ impl SendBundleTask {
                         .max_by_key(|pubkey| self.signer_balances.get(pubkey).unwrap())
                         .expect("signers balances should not be empty");
 
-                    let mut tx_signers = Vec::with_capacity(20);
-                    let mut ixs = Vec::with_capacity(21);
+                    let mut tx_signers = Vec::with_capacity(10);
+                    let mut ixs = Vec::with_capacity(11);
 
                     for ((hash, nonce), signer) in hash_and_nonce.iter().zip(signers.iter()) {
                         debug!(%tipper, signer = %signer.pubkey(), "adding mine instruction");
